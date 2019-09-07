@@ -1,0 +1,74 @@
+.wrapper{
+    padding-top: 100px;
+    text-align: center;
+}
+
+h1{
+ margin-bottom: 50px; 
+}
+
+h3{
+padding-right: 75px;}
+
+
+.training {
+    font-family: 'Roboto', sans-serif;
+    width: 45%;
+    border: solid 1px black;
+    margin: 0 20px 30px 20px;;
+    border-radius: 10px;
+    box-shadow: 5px 7px #97c4ff;
+    height:fit-content !important;
+}
+
+#dateOfTraining{
+    height: 50px;
+    padding-top: 10px;
+    background-color: rgb(0, 99, 248);
+    color:black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: solid 1px black;
+}
+
+.training_weight{
+    margin-bottom: 10px;
+}
+
+.training_note{
+    margin-bottom: 15px;
+}
+
+#cardioTraining{
+    padding-top: 20px;
+    background-color: rgb(144, 187, 252);
+}
+
+#weightTraining{
+    padding-top: 20px;
+    background-color: rgb(144, 187, 252);
+}
+
+#deleteTraining{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display:inline-block;
+    width: 100%;
+    border-top: solid 1px black;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+form{
+    margin: 0;
+}
+
+.burned_kcal{
+    margin-bottom: 15px;
+    border-top: solid 1px black;
+    padding-top: 10px; 
+}
+
+
+
