@@ -1,6 +1,7 @@
-body{
+body {
     background-color: #f9fcff;
 }
+
 .top_bar {
     width: 100%;
     min-width: 150px;
@@ -13,39 +14,39 @@ body{
     position: fixed;
 }
 
-#nav_bar_profile_pic{
+#nav_bar_profile_pic {
     width: 30px;
     height: 35px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-#nav_bar_profile{
+#nav_bar_profile {
     float: right;
     margin: 10px;
     display: inline-flex;
     width: 250px;
 }
 
-#nav_bar_profile i{
+#nav_bar_profile i {
     margin-left: 10px;
     padding-top: 10px;
-}   
+}
 
-#nav_bar_profile_link{
+#nav_bar_profile_link {
     text-decoration: none;
 }
 
-#top_bar_title{
+#top_bar_title {
     margin-left: 50px;
 }
- 
-.top_bar_links{
+
+.top_bar_links {
     margin-left: 30px;
     font-size: 25px;
 }
 
-.top_bar_links i{
+.top_bar_links i {
     margin: 0px 5px 0px 10px;
 }
 
@@ -54,11 +55,11 @@ body{
     align-content: flex-start;
 }
 
-#toggle{
+#toggle {
     display: none;
 }
 
-.top_bar label{
+.top_bar label {
     margin: 0 40px 0 0;
     font-size: 26;
     line-height: 70px;
@@ -67,23 +68,13 @@ body{
     border-style: none;
 }
 
-#menu{
+#menu {
     width: 100%;
     padding-top: 10px;
 }
 
-#profile_navbar{
-    position: absolute;
-    right: 20px;
-    top: 10px;
-}
-
-#log_out_span{
-    display: none;
-}
-
 @media only screen and (max-width: 1350px) {
-    .top_bar label{
+    .top_bar label {
         display: block;
         cursor: pointer;
     }
@@ -92,45 +83,37 @@ body{
         font-size: 15px;
         display: none;
     }
-    #menu span{
+    #menu span {
         display: block;
         margin-bottom: 10px;
         padding-bottom: 5px;
     }
-    #menu i{
+    #menu i {
         display: none;
     }
-    #toggle:checked + #menu {
+    #toggle:checked+#menu {
         padding-top: 0px;
-        display:block;
+        display: block;
         background-color: rgb(144, 187, 252);
         height: fit-content;
         margin-top: 60px;
         position: absolute;
         border: 1px solid black;
     }
-    #log_out_span{
-        display: block;
-        padding-top: 10px;
-    }
-    .top_bar_links{
+    .top_bar_links {
         font-size: 15px;
         border-top: solid 1px black;
         padding-top: 10px;
     }
-    #top_bar_links_app_name{
+    #top_bar_links_app_name {
         display: none !important;
     }
-    #log_out_i{
-        display: inline-flex !important;
-        padding-left: 5px;
-    }
-    #nav_bar_profile{
+    #nav_bar_profile {
         float: right;
         margin: 10px;
         display: inline-flex;
     }
-    #first_top_bar_link{
+    #first_top_bar_link {
         border-top: none;
     }
 }
@@ -140,11 +123,11 @@ body{
     padding: 10px 10px 0 10px;
 }
 
-.logo a{
+.logo a {
     text-decoration: none;
 }
 
-.nav{
+.nav {
     float: right;
     right: 1px;
     position: absolute;
@@ -160,7 +143,7 @@ body{
     min-width: 950px;
 }
 
-#main_column{
+#main_column {
     background-color: #c2ddff;
     box-shadow: 2px 2px 2px #69b2ff;
     margin-bottom: 10px;
@@ -169,7 +152,7 @@ body{
 
 .column {
     margin-top: 20px;
-    background-color:#c2ddff;
+    background-color: #c2ddff;
     padding: 10px;
     border-left: 1px solid #69b2ff;
     border-top: 1px solid #69b2ff;
@@ -177,7 +160,7 @@ body{
     box-shadow: 2px 2px 1px #69b2ff;
 }
 
-.user_details{
+.user_details {
     width: 300px;
     float: left;
     margin: 20px 0 20px 0;
@@ -194,7 +177,7 @@ body{
     width: 100%;
 }
 
-.post_form textarea{
+.post_form textarea {
     width: 81%;
     height: 60px;
     border-radius: 3px;
@@ -206,69 +189,74 @@ body{
     height: 125px;
 }
 
-.post_form input[type="submit"]:active {     /*when the button is clicked*/
+.post_form input[type="submit"]:active {
+    /*when the button is clicked*/
     padding: 5px 4px 4px 5px;
 }
 
-#sign-out-button{
-    color:black;
+#sign-out-button {
+    color: black;
 }
 
-#sign-out-button:hover{
-    color:white;
+#sign-out-button:hover {
+    color: white;
 }
 
-#main_form span{
+#main_form span {
     font-weight: bold;
 }
 
-#main_form input{
+#main_form input {
     border-radius: 6px;
 }
 
-#main_form input:focus{
+#main_form input:focus {
     outline: 0;
 }
 
-#main_form .row{
+#main_form .row {
     margin: 10px 0 10px 0;
 }
 
-.container h3{
+#main_form h3 {
+    margin-left: 160px;
+}
+
+.container h3 {
     text-align: center;
     width: 80%;
     margin: 5px 0 25px 75px;
 }
 
-#cardio_training .row{
+#cardio_training .row {
     margin-left: 50px;
 }
 
-#cardio_training input{
-    text-align: right; 
+#cardio_training input {
+    text-align: right;
     width: 30%;
     margin-bottom: 20px;
 }
 
-#weight_training input{
+#weight_training input {
     width: 40%;
     text-align: center;
 }
 
-.body_part_title{
+.body_part_title {
     font-size: 20px;
     margin-left: 50px;
 }
 
-#textarea_training{
+#textarea_training {
     margin-top: 20px;
 }
 
-.col-3{
+.col-3 {
     width: 100%;
 }
 
-#post_button{
+#post_button {
     width: 100%;
     height: 50px;
     text-align: left;
@@ -280,30 +268,29 @@ body{
     margin-top: 30px;
 }
 
-a{
-    color:black; 
+a {
+    color: black;
 }
 
-a:hover{
-    color:white;
+a:hover {
+    color: white;
 }
 
-
-
-
-#day_of_training input{
+#day_of_training input {
     text-align: right;
     font-size: 17px;
 }
 
-#day_of_training input::-webkit-inner-spin-button{
+#day_of_training input::-webkit-inner-spin-button {
     display: none;
 }
 
+
 /* Best Performances PHP */
-#bestPerformancesDiv{
+
+#best_performances_div {
     margin-bottom: 50px;
-    margin-top: 50px ;
+    margin-top: 50px;
     border-radius: 20px;
     background-color: #c2ddff;
     font-weight: bold;
@@ -314,45 +301,40 @@ a:hover{
     border-left: 1px solid #69b2ff;
 }
 
-#bestPerformances-title{
-    text-align: center;
-    padding-top: 60px;
-}
-
-#best_performances_titles{
+#best_performances_titles {
     margin-bottom: 50px;
     font-size: 25px;
     padding-bottom: 30px;
     background-color: rgb(0, 99, 248);
-    padding-top:20;
+    padding-top: 20;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
 
-.best-training{
+.best_training {
     text-align: left;
     padding-left: 100px;
 }
 
-.best_performances_training_names{
+.best_performances_training_names {
     text-align: left;
     margin-left: 100px;
 }
 
-.best_performances_training_values{
+.best_performances_training_values {
     text-align: left;
     margin-left: 150px;
 }
 
-.bestPerformances{
+.best_performances {
     background-color: white;
 }
 
 input[type='file'] {
-    opacity:0 ;
-  }
+    opacity: 0;
+}
 
-  label{
+label {
     font: bold 11px Arial;
     text-decoration: none;
     background-color: #EEEEEE;
@@ -364,148 +346,122 @@ input[type='file'] {
     border-left: 1px solid #CCCCCC;
     height: 20px;
     margin-left: 5px;
-  }
-
-  label:hover{
-    cursor: pointer;
-  }
-
-  #change_pic{
-    font: bold 11px Arial;
-    text-decoration: none;
-    background-color: #EEEEEE;
-    color: #333333;
-    padding: 2px 6px 2px 6px;
-    border-top: 1px solid #CCCCCC;
-    border-right: 1px solid #333333;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #CCCCCC;
-    height: 20px;
-    margin-bottom: 10px;
-  }
-
-  #profile_pic{
-      width: 100px;
-      height: 120px;
-      border: 1px solid #c2ddfa;
-      border-radius: 50%;
-      margin-right: 10px;
-  }
-
-
-.hidden{
-      display: none;
-  }
-
-  #user_profile_column{
-    background-color: #c2ddff;
-    box-shadow: 2px 2px 2px #69b2ff;
-
-  }
-
-  #label_new_profile_pic{
-      height: 40px;
-  }
-
-  #submit_new_profile_pic{
-      margin-top: 30px;
-      margin-left: 3px;
-      padding-bottom: 10px;
-  }
-
-/* Profile.php */
-  #profile{
-      height: 30px;
-      margin: 15px 0 15px 5px;
-  }
-
-  #profile_title{
-      text-align: center;
-      margin-bottom: 25px;
-  }
-
-  #profile_profile_pic{
-    text-align: center;
-  }
-
-  #profile_profile_pic input, label {
-      margin-right: 20px;
-  }
-
-  #profile_profile_pic img{
-    width: 280px;
-    height: 310px;
-  }
-
-  .profile{
-      width: 320;
-      height: 480px;
-      margin-top: 50px;
-  }
-
-  #profile_user_info{
-      text-align: center;
-  }
-  
-  #profile_user_info_edit{
-    text-align: center;
 }
 
-  #profile_user_info_email{
-    margin-top: 10px;
-  }
+label:hover {
+    cursor: pointer;
+}
 
-  #profile_user_info_age input{
-      text-align: right;   
-  }
-
-  #profile_user_info_age input::-webkit-inner-spin-button{
+.hidden {
     display: none;
 }
 
-#profile_user_info_email input{
+#label_new_profile_pic {
+    height: 40px;
+}
+
+#submit_new_profile_pic {
+    margin-top: 30px;
+    margin-left: 3px;
+    padding-bottom: 10px;
+}
+
+
+/* Profile.php */
+
+#profile {
+    height: 30px;
+    margin: 15px 0 15px 5px;
+}
+
+#profile_title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#profile_profile_pic {
+    text-align: center;
+}
+
+#profile_profile_pic input,
+label {
+    margin-right: 20px;
+}
+
+#profile_profile_pic img {
+    width: 280px;
+    height: 310px;
+}
+
+.profile {
+    width: 320;
+    height: 480px;
+    margin-top: 50px;
+}
+
+#profile_user_info {
+    text-align: center;
+}
+
+#profile_user_info_edit {
+    text-align: center;
+}
+
+#profile_user_info_email {
+    margin-top: 10px;
+}
+
+#profile_user_info_age input {
+    text-align: right;
+}
+
+#profile_user_info_age input::-webkit-inner-spin-button {
+    display: none;
+}
+
+#profile_user_info_email input {
     width: 200px;
     text-align: center;
 }
 
-#profile_user_info_nationality input{
+#profile_user_info_nationality input {
     text-align: center;
 }
 
-#profile_user_info_phone_number input{
+#profile_user_info_phone_number input {
     text-align: center;
 }
 
-#profile_user_info_phone_number input::-webkit-inner-spin-button{
+#profile_user_info_phone_number input::-webkit-inner-spin-button {
     display: none;
 }
 
-#profile_user_search_friend ul{
+#profile_user_search_friend ul {
     background-color: white;
     border-left: 1px solid lightblue;
     border-bottom: 1px solid lightblue;
     cursor: pointer;
     padding: 0;
     margin-left: 20px;
-    width: 225px; 
+    width: 225px;
 }
 
-#profile_user_search_friend li{
+#profile_user_search_friend li {
     list-style-type: none;
     padding: 10px 0 10px 10px;
 }
 
-#profile_user_search_friend li:hover{
+#profile_user_search_friend li:hover {
     background-color: #0044ff;
 }
 
-.profile_user_search_image{
+.profile_user_search_image {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-#search_user_input{
+#search_user_input {
     margin-left: 20px;
     width: 225px;
 }
@@ -514,20 +470,20 @@ input[type='file'] {
     text-decoration: none;
 }
 
-.search_friend_anchor{
+.search_friend_anchor {
     width: 100%;
 }
 
-#profile_search_friend_title{
+#profile_search_friend_title {
     text-align: center;
     margin-bottom: 10px;
 }
 
-#profile_search_friend_div{
+#profile_search_friend_div {
     height: 200px;
 }
 
-#profile_friends_list_div{
+#profile_friends_list_div {
     height: 230px;
     text-align: left;
     overflow-y: scroll;
@@ -535,91 +491,88 @@ input[type='file'] {
     font-size: 3px;
 }
 
-
-#profile_friends_list_div .col-sm-3{
+#profile_friends_list_div .col-sm-3 {
     padding-left: 0;
 }
 
-
-#profile_userFriend_list_div{
-    height: 330px;
-    overflow-x: hidden; 
-    overflow-x: auto;  
+#profile_userFriend_list_div {
+    height: 300px;
+    overflow-x: hidden;
+    overflow-x: auto;
     text-align: left;
 }
 
 #profile_friends_list .col-sm-9:hover {
     background-color: #255efd;
-
 }
 
-
-#profile_friends_list a{
+#profile_friends_list a {
     text-align: left;
     padding-right: 8px;
 }
 
-
-#profile_friends_list_title{
+#profile_friends_list_title {
     text-align: center;
-    margin-bottom: 20px;    
+    margin-bottom: 20px;
 }
 
-.add_to_friends_button{
+.add_to_friends_button {
     margin-left: 20px;
 }
 
-.profile_user_friendList_image{
+.remove_from_friends_button {
+    margin-left: 20px;
+}
+
+.profile_user_friend_list_image {
     width: 30px;
     height: 30px;
     margin-right: 15px;
 }
 
-.profile_friends_list{
+.profile_friends_list {
     font-size: 20px;
 }
 
-
-.profile_userFriend_message{
+.profile_user_friend_message {
     padding-top: 10px;
     cursor: pointer;
 }
 
-.profile_userFriend_message:hover{
+.profile_user_friend_message:hover {
     background-color: #c2ddff;
 }
 
-#profile_user_message_column{
+#profile_user_message_column {
     max-width: 320px;
     margin-right: 45px;
     margin-left: 15px;
 }
 
-#usernameList{
+#username_list {
     height: 150px;
     width: fit-content;
-    overflow-x: hidden; 
-    overflow-x: auto; 
+    overflow-x: hidden;
+    overflow-x: auto;
     text-align: left;
-   
 }
 
-#messageBox{
+#message_box {
     background-color: white;
     height: 270px;
     width: 250px;
     margin-left: 15px;
     border-radius: 10px;
-    -webkit-box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
-    -moz-box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
-    box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
-    overflow-x: hidden; 
-    overflow-x: auto; 
+    -webkit-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    -moz-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    overflow-x: hidden;
+    overflow-x: auto;
     padding-top: 5px;
     max-width: 250px;
 }
 
-.userLoggedInMessages{
+.user_loggen_in_messages {
     background-color: #69b2ff;
     width: fit-content;
     margin: 3px 10px 3px 10px;
@@ -627,13 +580,13 @@ input[type='file'] {
     padding-left: 10px;
     padding-right: 10px;
     text-align: left;
-    white-space: pre-wrap;       
-    word-wrap: break-word;      
+    white-space: pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
     white-space: normal;
 }
 
-.userLoggedInMessagesFromFriend{
+.user_logged_in_messages_from_friend {
     background-color: #fd6e6e;
     width: fit-content;
     margin: 3px 10px 3px 80px;
@@ -643,51 +596,48 @@ input[type='file'] {
     text-align: left;
 }
 
-#messagesInput{
+#messages_input {
     position: absolute;
     bottom: 40;
     left: 25;
-    
 }
 
-#messagesInputText{
+#messages_input_text {
     width: 200px;
     height: 55px;
     resize: none;
     font-size: 13px;
     padding-bottom: 0;
-    -webkit-box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
-    -moz-box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
-    box-shadow: 6px 6px 5px 0px rgba(74,124,224,1);
+    -webkit-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    -moz-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
     align-content: flex-start;
 }
 
-
-#messageInputbutton{
+#messages_input_button {
     margin-left: 20px;
     margin-bottom: 50px;
 }
 
-#profile_back_button{
+#profile_back_button {
     position: absolute;
     bottom: 10;
     right: 125;
     width: 20%;
 }
 
-#friend_profile_back_button{
+#friend_profile_back_button {
     position: absolute;
-    right:    170;
-    bottom:   30;
+    right: 170;
+    bottom: 38;
     width: 17%;
 }
 
-#messagesInput textarea{
+#messages_input textarea {
     border-style: none;
     border-radius: 5px;
 }
 
-#user_friend_profile_pic{
+#user_friend_profile_pic {
     z-index: 100;
 }
-

@@ -8,36 +8,31 @@ $result = prepareAndExecuteQuery($con, "SELECT * FROM posts WHERE added_by= ? ",
 
 function bestPerformance($result){  
 
-    $firstTrainingNameNeeded = 1;
-    $lastTrainingNameNeeded = 21;
-    $bestPerforamnces = [];
-    $dayOfPerformances = [];
-    $trainingNames = ["Cycling", "Running", "Swimming", "Deadlift", "Back Barbell", "Back Machine", "Biceps Dumbbell", "Biceps Barbell", "Biceps Machine", "Bench Press",
+    $best_performances = [];
+    $day_of_performances = [];
+    $training_names = ["Cycling", "Running", "Swimming", "Deadlift", "Back Barbell", "Back Machine", "Biceps Dumbbell", "Biceps Barbell", "Biceps Machine", "Bench Press",
                         "Chest Dumbbell", "Chest Machine", "Leg Press", "Squats", "Calf", "Shoulders Dumbbell", "Shoulders Barbell", "Shoulders Machine", "Triceps Dumbbell",
                         "Triceps Barbell", "Triceps Machine"];
     $km_units = ["Cycling", "Running"];
     $m_units = ["Swimming"];
-    $kg_units = ["Deadlift", "Back Barbell", "Back Machine", "Biceps Dumbbell", "Biceps Barbell", "Biceps Machine", "Bench Press",
-    "Chest Dumbbell", "Chest Machine", "Leg Press", "Squats", "Calf", "Shoulders Dumbbell", "Shoulders Barbell", "Shoulders Machine", "Triceps Dumbbell",
-    "Triceps Barbell", "Triceps Machine"];
     
-    for($i = 0; $i < sizeof($trainingNames); $i++){
-        $bestPerforamnces[$trainingNames[$i]] = 0;
-        $dayOfPerformances[$trainingNames[$i]]= "";
+    for($i = 0; $i < sizeof($training_names); $i++){
+        $best_performances[$training_names[$i]] = 0;
+        $day_of_performances[$training_names[$i]]= "";
     }
     
     $result->data_seek(0);      
     while ($row = $result->fetch_assoc()) {
-            foreach($bestPerforamnces as $key => $value){
+            foreach($best_performances as $key => $value){
                 $performace = (int)$row[$key];
-                if($performace > $bestPerforamnces[$key]){
-                    $bestPerforamnces[$key] = $performace;
-                    $dayOfPerformances[$key] = $row['Date of training'];
+                if($performace > $best_performances[$key]){
+                    $best_performances[$key] = $performace;
+                    $day_of_performances[$key] = $row['Date of training'];
                 }
 
             }
         }
-    echo "<div class='container' id='bestPerformancesDiv'>";
+    echo "<div class='container' id='best_performances_div'>";
         echo "<div id='best_performances_titles'  class='row'>";
             echo "<div class='col'>";
                 echo "Training Name";
@@ -49,62 +44,62 @@ function bestPerformance($result){
                 echo "Achievement day";
             echo "</div>";
         echo "</div>";
-        for($i = 0; $i < sizeof($trainingNames); $i++){
+        for($i = 0; $i < sizeof($training_names); $i++){
             echo "<div>";
-                echo "<p class='best-training'>";
-                    if(in_array($trainingNames[$i], $km_units)) {
-                        echo "<div class='row bestPerformances'>";
+                echo "<p class='best_training'>";
+                    if(in_array($training_names[$i], $km_units)) {
+                        echo "<div class='row best_performances'>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_names'>";
-                                     echo $trainingNames[$i];
+                                     echo $training_names[$i];
                                 echo "</div>";
                             echo "</div>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_values'>";
-                                    echo $bestPerforamnces[$trainingNames[$i]] . " km" ;
+                                    echo $best_performances[$training_names[$i]] . " km" ;
                                 echo "</div>";       
                             echo "</div>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_days'>";
-                                    echo $dayOfPerformances[$trainingNames[$i]];
+                                    echo $day_of_performances[$training_names[$i]];
                                 echo "</div>";   
                             echo "</div>";
                         echo "</div>";
                     }
-                    else if (in_array($trainingNames[$i], $m_units)) {
-                        echo "<div class='row bestPerformances'>";
+                    else if (in_array($training_names[$i], $m_units)) {
+                        echo "<div class='row best_performances'>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_names'>";
-                                    echo $trainingNames[$i];
+                                    echo $training_names[$i];
                                 echo "</div>";
                             echo "</div>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_values'>";
-                                    echo $bestPerforamnces[$trainingNames[$i]] . " m" ;
+                                    echo $best_performances[$training_names[$i]] . " m" ;
                                 echo "</div>";   
                             echo "</div>";
                             echo "<div class='col'>";
                                 echo "<div class='best_performances_training_days'>";
-                                     echo $dayOfPerformances[$trainingNames[$i]];
+                                     echo $day_of_performances[$training_names[$i]];
                                 echo "</div>";   
                             echo "</div>";
                         echo "</div>";   
                     }
                     else {
-                    echo "<div class='row bestPerformances'>";
+                    echo "<div class='row best_performances'>";
                         echo "<div class='col'>";
                             echo "<div class='best_performances_training_names'>";
-                                echo $trainingNames[$i];
+                                echo $training_names[$i];
                             echo "</div>";
                         echo "</div>";
                         echo "<div class='col'>";
                             echo "<div class='best_performances_training_values'>";
-                                echo $bestPerforamnces[$trainingNames[$i]] . " kg" ;
+                                echo $best_performances[$training_names[$i]] . " kg" ;
                             echo "</div>";   
                         echo "</div>";
                         echo "<div class='col'>";
                             echo "<div class='best_performances_training_days'>";
-                                echo $dayOfPerformances[$trainingNames[$i]];
+                                echo $day_of_performances[$training_names[$i]];
                             echo "</div>";    
                         echo "</div>";
                     echo "</div>";   
@@ -117,7 +112,7 @@ function bestPerformance($result){
 
 ?>
 
-    <div id="bestPerformances-title">
+    <div id="best_performances_title">
         <h1><i class="fas fa-award"></i> Best Performances <i class="fas fa-award"></i></h1>
        <?php
         bestPerformance($result);

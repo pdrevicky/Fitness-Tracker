@@ -1,20 +1,15 @@
 <?php
-require_once("includes/header.php");
-require_once("includes/classes/user.php");
-require_once("includes/classes/post.php");
+require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
 
 $user_obj = new User($con, $user_logged_in);
 
-
-
 if(isset($_POST['profile_user_info_edit'])){
-    $post = new Post($con, $user_logged_in);
-    $post->updateProfileUserInfo($_POST['date_of_birth'],$_POST['nationality'],$_POST['email'], $_POST['phone_number'], $user_logged_in);
+    $user_obj->updateProfileUserInfo($_POST['date_of_birth'],$_POST['nationality'],$_POST['email'], $_POST['phone_number'], $user_logged_in);
 }
 
 if(isset($_POST['profile_add_friend_button'])){
-    $post = new Post($con, $user_logged_in);
-    $post->addFriend($_POST['search_user_input'], $user_logged_in, $friendUsername);
+    $user_obj->addFriend($_POST['search_user_input'], $user_logged_in, $friend_username);
 }
 
 echo "<div id='profile_title'>";
@@ -25,19 +20,18 @@ echo "<div id='profile_title'>";
     echo "</h1>";
 echo "</div>";
 
-$friendUsername = $_GET['friendUsername'];
-$friendUsernameTitle = str_replace("_", " ", $friendUsername);
-$friendUsernameTitle = ucwords($friendUsernameTitle);
-$friendUsernameTitle = preg_replace('/[0-9]+/', '', $friendUsernameTitle); 
+$friend_username = $_GET['friend_username'];
+$friend_username_title = str_replace("_", " ", $friend_username);
+$friend_username_title = ucwords($friend_username_title);
+$friend_username_title = preg_replace('/[0-9]+/', '', $friend_username_title); 
 
 
 //get las id for message I get
-$lastID =  $user_obj->getLastMessageToId($user_logged_in, $friendUsername);
+$lastID =  $user_obj->getLastMessageToId($user_logged_in, $friend_username);
 
-if(isset($_POST['sendMessage'])){
-    $post = new Post($con, $user_logged_in);
-    $post->addMessage($_POST['message'], $user_logged_in, $friendUsername);
-    header('Location: messages.php?friendUsername='.$friendUsername.'');
+if(isset($_POST['send_message'])){
+    $user_obj->addMessage($_POST['message'], $user_logged_in, $friend_username);
+    header('Location: messages.php?friend_username='.$friend_username.'');
     exit();
 }
 
@@ -46,28 +40,27 @@ if(isset($_POST['sendMessage'])){
 
     function processNewMessages(data)
     {  
-        $("#messageBox").empty();
+        $("#message_box").empty();
         for(var i = 0; i < data['messages'].length; i++ ){
-            var messageBox = document.getElementById("messageBox");
+            var message_box = document.getElementById("message_box");
             var div = document.createElement("DIV");
-            if(data['sentBy'][i] == "<?php echo $friendUsername; ?>" ){
-                div.className = 'userLoggedInMessagesFromFriend';
+            if(data['sent_by'][i] == "<?php echo $friend_username; ?>" ){
+                div.className = 'user_logged_in_messages_from_friend';
             }
-            if(data['sentBy'][i] == "<?php echo $user_logged_in; ?>" ){
-                div.className = 'userLoggedInMessages';
+            if(data['sent_by'][i] == "<?php echo $user_logged_in; ?>" ){
+                div.className = 'user_loggen_in_messages';
             }
             div.innerHTML = data['messages'][i];
-            messageBox.appendChild(div);    
+            message_box.appendChild(div);    
         }
-        console.log("idem");
     }
 
     setInterval(function(){
         $.ajax({
-                    url:"messages_handler.php", //the page containing php script
+                    url:"includes/handlers/messages_handler.php", //the page containing php script
                     type: "POST", //request type,
                     dataType: "json",
-                    data: {function: "getState", friend: "<?php echo $friendUsername; ?>", userLoggedIn: "<?php echo $user_logged_in; ?>" },
+                    data: {function: "get_state", friend: "<?php echo $friend_username; ?>", user_logged_in: "<?php echo $user_logged_in; ?>" },
                     success: processNewMessages,        
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr);
@@ -165,16 +158,16 @@ if(isset($_POST['sendMessage'])){
                     echo "<div id='profile_title'>";
                         echo "<h4>";
                             echo "<b>";
-                                echo $friendUsernameTitle;
+                                echo $friend_username_title;
                             echo "</b>";
                         echo "</h4>";
                     echo "</div>";
-                        echo "<div id='messageBox'>";
-                            $user_obj->getMessages($user_logged_in, $friendUsername);
+                        echo "<div id='message_box'>";
+                            $user_obj->getMessages($user_logged_in, $friend_username);
                         echo "</div>";
-                    echo "<form id='messagesInput' action='messages.php?friendUsername=".$friendUsername."' method='post'>";
-                         echo "<textarea id='messagesInputText' name='message' rows='5' required></textarea>";
-                         echo "<button id='messageInputbutton' type='submit' name='sendMessage' class='btn btn-primary'>Send</button>";
+                    echo "<form id='messages_input' action='messages.php?friend_username=".$friend_username."' method='post'>";
+                         echo "<textarea id='messages_input_text' name='message' rows='5' required></textarea>";
+                         echo "<button id='messages_input_button' type='submit' name='send_message' class='btn btn-primary'>Send</button>";
                     echo "</form>";
                     ?>
                     <a href='profile.php' id='profile_back_button' class='btn btn-primary'>Back</a>

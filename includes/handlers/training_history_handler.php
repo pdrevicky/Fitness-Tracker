@@ -227,7 +227,6 @@ function newTraining($result, $con)
     // delete training report from training_history.php
     if (isset($_POST['delete']) && $_POST['trainingId']) {
         $id = $_POST['trainingId'];
-        mysqli_query($con, "DELETE FROM posts WHERE id='$id'");
         prepareAndExecuteQuery($con, "DELETE FROM posts WHERE id= ? ", 'i', [$id]);
         header("Refresh:0");
     }

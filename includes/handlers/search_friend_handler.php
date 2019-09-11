@@ -7,9 +7,6 @@ if(isset($_POST["query"])){
     $searchedName = $_POST["query"];
     $searchedName = str_replace(" ", "_", $searchedName); 
     $query = "SELECT * FROM users WHERE username LIKE '%".$searchedName."%' ";
-    // $query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username =  ", 's', [$user]);
-    // $query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username LIKE ? ", 's', [$searchedName]);
-    // $query = ("SELECT * FROM users WHERE username LIKE CONCAT  ('%', ? , '%') ", 's', [$searchedName]);
     $result = mysqli_query($con, $query);
     $output = '<ul>';
     if(mysqli_num_rows($result) > 0){

@@ -3,26 +3,26 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
 
 $function = $_POST['function'];
-$friendUsername = $_POST['friend'];
-$user_logged_in = $_POST['userLoggedIn'];
+$friend_username = $_POST['friend'];
+$user_logged_in = $_POST['user_logged_in'];
 
 $result = array();
-$messagesToUserLoggedIn = array();
-$sentBy = array();
+$messages_to_user_logged_in = array();
+$sent_by = array();
 
 switch($function){
-    case('getState'):
-            $sizeOfFile = 0;
-            $messages = prepareAndExecuteQuery($con, "SELECT * FROM messages WHERE (user= ?  AND user_to = ?) OR (user = ? AND user_to = ?) ", 'ssss', [$user_logged_in,$friendUsername , $friendUsername, $user_logged_in]);
+    case('get_state'):
+            $size_of_file = 0;
+            $messages = prepareAndExecuteQuery($con, "SELECT * FROM messages WHERE (user= ?  AND user_to = ?) OR (user = ? AND user_to = ?) ", 'ssss', [$user_logged_in,$friend_username , $friend_username, $user_logged_in]);
             while ($row = $messages->fetch_assoc()) {
-                    array_push($messagesToUserLoggedIn, $row['text']);
-                    array_push($sentBy, $row['user']);
+                    array_push($messages_to_user_logged_in, $row['text']);
+                    array_push($sent_by, $row['user']);
             }
 }
 
-$result['messages'] = $messagesToUserLoggedIn;
+$result['messages'] = $messages_to_user_logged_in;
 
-$result['sentBy'] = $sentBy;
+$result['sent_by'] = $sent_by;
  
 echo json_encode($result);
 ?>

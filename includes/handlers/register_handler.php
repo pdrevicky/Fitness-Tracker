@@ -3,32 +3,19 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/includes/database_helpers.php');
 
 $error_array = array(); 
 
-function preprocess_name($name_to_process){
-    $name = strip_tags($name_to_process);
-    $name = str_replace(' ', '', $name); 
-    $name = ucfirst(strtolower($name)); 
-    return $name;
-}
-
-function preprocess_email($email_to_process){
-    $email = strip_tags($email_to_process);  
-    $email = str_replace(' ', '', $email);  
-    return $email;
-}
-
 if(isset($_POST['register_button'])) {
 
     // Registration form values
-    $first_name = preprocess_name($_POST['register_first_name']);
+    $first_name = strip_tags($_POST['register_first_name']);
     $_SESSION['register_first_name'] = $first_name; 
 
-    $last_name = preprocess_name($_POST['register_first_name']);
+    $last_name = strip_tags($_POST['register_first_name']);
     $_SESSION['register_last_name'] = $last_name; 
 
-    $email_1 = preprocess_email($_POST['register_email_1']);
+    $email_1 = strip_tags($_POST['register_email_1']);
     $_SESSION['register_email_1'] = $email_1; 
 
-    $email_2 = preprocess_email($_POST['register_email_2']);
+    $email_2 = strip_tags($_POST['register_email_2']);
     $_SESSION['register_email_2'] = $email_2;
 
     $password_1 = strip_tags($_POST['register_password_1']);  

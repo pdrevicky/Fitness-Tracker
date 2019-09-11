@@ -1,7 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/user.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/post.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/training_history_handler.php');
 ?>
 

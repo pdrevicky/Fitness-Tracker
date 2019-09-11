@@ -6,13 +6,12 @@ function editProfileUserInfo(){
 }
 
 $(document).ready(function() {
-    $("#messagesInputText").keyup(function(event) {
+    $("#messages_input_text").keyup(function(event) {
         if (event.keyCode === 13) {
-            $("#messageInputbutton").click();
+            $("#messages_input_button").click();
         }
     });
 });
-
 
 $(document).ready(function() {
     $('#search_user_input').keyup(function(){
@@ -23,8 +22,8 @@ $(document).ready(function() {
                 method:"POST",
                 data:{query:query},
                 success:function(data){
-                    $('#usernameList').fadeIn();
-                    $('#usernameList').html(data);
+                    $('#username_list').fadeIn();
+                    $('#username_list').html(data);
                 }
             })
         } 
@@ -32,12 +31,12 @@ $(document).ready(function() {
     //if user click on choosed user other users dissapear
     $(document).on('click', 'li' ,function(){
         $('#search_user_input').val($(this).text());
-        $('#usernameList').fadeOut();
+        $('#username_list').fadeOut();
     });
 });
 
 $(document).ready(function() {
-    var objDiv = document.getElementById("messageBox");
+    var objDiv = document.getElementById("message_box");
     objDiv.scrollTop = objDiv.scrollHeight;
 });
 

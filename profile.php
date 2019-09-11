@@ -1,13 +1,11 @@
 <?php
-require_once("includes/header.php");
-require_once("includes/classes/user.php");
-require_once("includes/classes/post.php");
+require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
 
 $user_obj = new User($con, $user_logged_in);
 
 if(isset($_POST['profile_user_info_edit'])){
-    $post = new Post($con, $user_logged_in);
-    $post->updateProfileUserInfo($_POST['date_of_birth'],$_POST['nationality'],$_POST['email'], $_POST['phone_number'], $user_logged_in);
+    $user_obj->updateProfileUserInfo($_POST['date_of_birth'],$_POST['nationality'],$_POST['email'], $_POST['phone_number'], $user_logged_in);
 }
 
 
@@ -119,7 +117,7 @@ echo "</div>";
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <input type='text' name='search_user_input' id='search_user_input' class='form-control' placeholder='Search Name'>
-                                            <div id='usernameList'>
+                                            <div id='username_list'>
                                             </div>   
                                     </div> 
                                     <div class="col-sm-2">

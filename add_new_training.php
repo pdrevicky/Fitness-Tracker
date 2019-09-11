@@ -1,12 +1,12 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/post.php');
+
+$user_obj = new User($con, $user_logged_in);
 
 // add new training to database if post button is pressed
 if (isset($_POST['post'])) {
-    $post = new Post($con, $user_logged_in);
-    $post->submitPost(
+    $user_obj->submitPost(
         $_POST['cycling'],
         $_POST['running'],
         $_POST['swimming'],
@@ -29,7 +29,8 @@ if (isset($_POST['post'])) {
         $_POST['t_barbell'],
         $_POST['t_machine'],
         $_POST['post_text'],
-        $_POST['day_of_training']
+        $_POST['day_of_training'],
+        $user_logged_in
     );
     header("Location: training_history.php");
     exit;
