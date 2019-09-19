@@ -3,7 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
 
 //main array with keys and values
-$result = prepareAndExecuteQuery($con, "SELECT * FROM posts WHERE added_by= ? ", 's', [$user_logged_in]);
+$result = prepareAndExecuteQuery($con, "SELECT * FROM posts WHERE added_by= ? ", 's', [$_SESSION['username']]);
 //TODO: close result   
 
 function bestPerformance($result){  

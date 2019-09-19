@@ -4,8 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/includes/database_helpers.php');
 
 //if session is set make user loggedIn variable username
 if(isset($_SESSION['username'])) {       
-    $user_logged_in = $_SESSION['username']; 
-    $user_details_query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username = ? ", 's', [$user_logged_in]);
+    $user_details_query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username = ? ", 's', [$_SESSION['username']]);
     $user = mysqli_fetch_array($user_details_query); //get all info about user as an array  
 }
 else {
@@ -25,11 +24,11 @@ else {
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
-    <script src="assets/js/index.js"></script>
+    <script src="includes/js/index.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/training_history.css">
+    <link rel="stylesheet" href="includes/css/style.css">
+    <link rel="stylesheet" href="includes/css/training_history.css">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=DM+Serif+Display|Raleway|Roboto&display=swap" rel="stylesheet">

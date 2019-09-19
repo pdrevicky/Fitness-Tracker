@@ -13,9 +13,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php')
 
 <head>
     <title>Welcome to Fitness Tracker</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/register_style.css">
+    <link rel="stylesheet" type="text/css" href="includes/css/register_style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="assets/js/register.js"></script>
+    <script src="includes/js/register.js"></script>
 </head>
 
 <body>
@@ -97,7 +97,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php')
                     <br>
                     <?php if (in_array("EMAIL_IN_USE", $error_array)) echo "Email already in use <br>";
                     else if (in_array("INVALID_EMAIL_FORMAT", $error_array)) echo "Invalid email format <br>";
-                    else if (in_array("EMAIL_DO_NOT_MATCH   ", $error_array)) echo "Email do not match <br>"; ?>
+                    else if (in_array("EMAIL_DO_NOT_MATCH", $error_array)) echo "Email do not match <br>"; ?>
 
                     <input type="password" name="register_password_1" placeholder="Password" required>
                     <br>

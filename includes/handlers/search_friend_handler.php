@@ -1,30 +1,24 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/database_helpers.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/database_helpers.php');
 
-if(isset($_POST["query"])){
-    $output = ''; 
-    $searchedName = $_POST["query"];
-    $searchedName = str_replace(" ", "_", $searchedName); 
-    $query = "SELECT * FROM users WHERE username LIKE '%".$searchedName."%' ";
-    $result = mysqli_query($con, $query);
+// print under search bar similar names to name user is looking for
+if (isset($_POST["query"])) {
+    $output = '';
+    $searched_name = $_POST["query"];
+    $searched_name = str_replace(" ", "_", $searched_name);
+    $searched_name = "%$searched_name%";
+    $searched_name_query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username LIKE ?", 's', [$searched_name]);
     $output = '<ul>';
-    if(mysqli_num_rows($result) > 0){
-        while($row = mysqli_fetch_array($result)){
-            $username = $row['username'];
-            $id = $row['id'];
-            $username = str_replace("_", " ", $username);
-            $username = ucwords($username);
-            $username = preg_replace('/[0-9]+/', '', $username);
-            $profilePic = $row['profile_pic'];
-            $output .=  '<a class="search_friend_anchor" href="friend_profile.php?id='.$id.'">' . '<li>'.'<img class="profile_user_search_image" src="'.$profilePic.'">' . $username.  '</li>' .'</a>';
+    $searched_name_exists = mysqli_num_rows($searched_name_query) > 0;
+    if ($searched_name_exists) {
+        while ($user = mysqli_fetch_array($searched_name_query)) {
+            $output .=  '<a class="search_friend_anchor" href="friend_profile.php?id=' . $user['id'] . '">' . '<li>' .
+                '<img class="profile_user_search_image" src="' . $user['profile_pic'] . '">' . $user['first_name'] . " " . $user['last_name'] . '</li>' . '</a>';
         }
+    } else {
+        $output .= '<li>Name Not Found</li>';
     }
-    else{
-        $output .= '<li>Username Not Found</li>';
-    }
-    $output .= '</ul>' ;
+    $output .= '</ul>';
     echo $output;
 }
-
-

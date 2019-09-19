@@ -1,278 +1,206 @@
-<?php 
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/database_helpers.php');
-class User{
-    private $user;   //privete only this user can see them
-    private $con;
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/database_helpers.php');
+class User
+{
+    private $userTable;
+    private $dbConnection;
 
-    public function __construct($con, $user){ 
-        $this->con = $con;
-        $query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username= ? ", 's', [$user]);
-        $this->user = mysqli_fetch_array($query);
+    public function __construct($connection, $username)
+    {
+        $this->dbConnection = $connection;
+        $query = prepareAndExecuteQuery($connection, "SELECT * FROM users WHERE username= ? ", 's', [$username]);
+        $this->userTable = mysqli_fetch_array($query);   //this user all data from table 
     }
-    
-    public function submitPost($cycling, $running, $swimming,
-                               $ba_deadlift, $ba_barbell,$ba_machine,
-                               $b_dumbbell,$b_barbell,$b_machine,
-                               $c_benchpress,$c_dumbbell,$c_machine,
-                               $l_legPress,$l_squats,$l_calf, 
-                               $s_dumbbell,$s_barbell,$s_machine,
-                               $t_dumbbell,$t_barbell,$t_machine,
-                               $body,$day_of_training,$user_logged_in
-                            ) {
-        $body = strip_tags($body); //remove html tags
-        $body = mysqli_real_escape_string($this->con, $body); //do not act on special characters
 
-        //Get username
+    public function submitPost(
+        $cycling,
+        $running,
+        $swimming,
+        $ba_deadlift,
+        $ba_barbell,
+        $ba_machine,
+        $b_dumbbell,
+        $b_barbell,
+        $b_machine,
+        $c_benchpress,
+        $c_dumbbell,
+        $c_machine,
+        $l_legPress,
+        $l_squats,
+        $l_calf,
+        $s_dumbbell,
+        $s_barbell,
+        $s_machine,
+        $t_dumbbell,
+        $t_barbell,
+        $t_machine,
+        $body,
+        $day_of_training,
+        $user_logged_in
+    ) {
+        $body = strip_tags($body);
+        $body = mysqli_real_escape_string($this->dbConnection, $body); //do not act on special characters
+
         $added_by = $user_logged_in;
 
-        //insert post        
-        prepareAndExecuteQuery( $this->con, "INSERT INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",'iiiiiiiiiiiiiiiiiiiiiisss', ['', 
-        $cycling, $running, $swimming, 
-        $ba_deadlift, $ba_barbell, $ba_machine,
-        $b_dumbbell, $b_barbell, $b_machine,
-        $c_benchpress, $c_dumbbell, $c_machine,
-        $l_legPress, $l_squats, $l_calf, 
-        $s_dumbbell, $s_barbell, $s_machine,
-        $t_dumbbell, $t_barbell, $t_machine,
-        $body, $added_by, $day_of_training]);
-
+        // insert post        
+        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 'iiiiiiiiiiiiiiiiiiiiiisss', [
+            '',
+            $cycling, $running, $swimming,
+            $ba_deadlift, $ba_barbell, $ba_machine,
+            $b_dumbbell, $b_barbell, $b_machine,
+            $c_benchpress, $c_dumbbell, $c_machine,
+            $l_legPress, $l_squats, $l_calf,
+            $s_dumbbell, $s_barbell, $s_machine,
+            $t_dumbbell, $t_barbell, $t_machine,
+            $body, $added_by, $day_of_training
+        ]);
     }
 
-    public function updateProfileUserInfo($date_of_birth, $nationality, $email, $phone_number, $user_logged_in){
-        prepareAndExecuteQuery($this->con, "UPDATE users SET date_of_birth = ? WHERE username = ?", 'ss', [$date_of_birth, $user_logged_in] );
-        prepareAndExecuteQuery($this->con, "UPDATE users SET nationality = ? WHERE username = ?", 'ss', [$nationality, $user_logged_in] );
-        prepareAndExecuteQuery($this->con, "UPDATE users SET email = ? WHERE username = ?", 'ss', [$email, $user_logged_in] );
-        prepareAndExecuteQuery($this->con, "UPDATE users SET phone_number = ? WHERE username = ?", 'is', [$phone_number, $user_logged_in] );
-    
+    public function updateProfileUserInfo($date_of_birth, $nationality, $email, $phone_number, $user_logged_in)
+    {
+        prepareAndExecuteQuery($this->dbConnection, "UPDATE users SET date_of_birth = ?, nationality = ?, email = ?, phone_number = ?  WHERE username = ?", 'sssis', [$date_of_birth, $nationality, $email, $phone_number, $user_logged_in]);
     }
 
-    public function addFriend($friend_id, $user_logged_in, $friend_name){
-        //check if user exist
-        if ($user_logged_in == $friend_name){
+    public function addFriend($friend_id, $user_logged_in, $friend_name)
+    {
+        // check if user exist
+        if ($user_logged_in == $friend_name) {
             return null;
         }
-        $user_logged_in_friends_ids = prepareAndExecuteQuery($this->con, "SELECT friend_id FROM friends WHERE user= ? ", 's', [$user_logged_in]);
-        while ($row = $user_logged_in_friends_ids->fetch_assoc()){
-            if($row['friend_id'] == $friend_id){
+        $user_logged_in_friends_ids = prepareAndExecuteQuery($this->dbConnection, "SELECT friend_id FROM friends WHERE user= ? ", 's', [$user_logged_in]);
+        while ($row = $user_logged_in_friends_ids->fetch_assoc()) {
+            if ($row['friend_id'] == $friend_id) {
                 return null;
             }
         }
         $id = $friend_id;
         $friend = $friend_name;
-        $users = mysqli_query($this->con, "SELECT * FROM users");
+        $users = mysqli_query($this->dbConnection, "SELECT * FROM users");
         while ($row = $users->fetch_assoc()) {
-           if($row['id'] == $friend_id){
-            prepareAndExecuteQuery( $this->con, "INSERT INTO friends VALUES (?,?,?,?)", 'issi', [ '', $user_logged_in, $friend, $id] );
-           }
+            if ($row['id'] == $friend_id) {
+                prepareAndExecuteQuery($this->dbConnection, "INSERT INTO friends VALUES (?,?,?,?)", 'issi', ['', $user_logged_in, $friend, $id]);
+            }
         }
-
     }
 
-    public function removeFriend($friend_id, $user_logged_in){
-        $friend_id = (int)$friend_id;
-        prepareAndExecuteQuery( $this->con, "DELETE FROM friends WHERE user = ? AND friend_id = ? ", 'si', [$user_logged_in, $friend_id]);
+    public function removeFriend($friend_id, $user_logged_in)
+    {
+        $friend_id = (int) $friend_id;
+        prepareAndExecuteQuery($this->dbConnection, "DELETE FROM friends WHERE user = ? AND friend_id = ? ", 'si', [$user_logged_in, $friend_id]);
     }
 
-    public function addMessage($message, $user_logged_in, $friend_username){
-        $message = strip_tags($message);  //Remove html tags
+    public function addMessage($message, $user_logged_in, $friend_username)
+    {
+        $message = strip_tags($message);
         $message = rtrim($message);
-        prepareAndExecuteQuery($this->con, "INSERT INTO messages VALUES (?,?,?,?)", 'isss', [ '', $user_logged_in, $friend_username, $message] );
+        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO messages VALUES (?,?,?,?)", 'isss', ['', $user_logged_in, $friend_username, $message]);
     }
 
-    public function getUsername(){
-        return $this->user['username'];
+    public function getProfilePicture()
+    {
+        return $this->userTable['profile_pic'];
     }
 
-    public function getFirstAndLastName() {
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT first_name, last_name FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        return $row['first_name'] . " " . $row['last_name'];
+    public function getUsername()
+    {
+        return $this->userTable['username'];
     }
 
-    public function getEmail(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT email FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        return $row['email'];
+    public function getFirstAndLastName()
+    {
+        return $this->userTable['first_name'] . " " . $this->userTable['last_name'];
     }
 
-    public function getAge(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT date_of_birth FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        if ($row['date_of_birth'] == "0000-00-00"){
-           echo "<br>";
-        }
-        else {
-            //Get the current UNIX timestamp.
+    public function getEmail()
+    {
+        return $this->userTable['email'];
+    }
+
+    public function getId()
+    {
+        return $this->userTable['id'];
+    }
+
+    public function getAge()
+    {
+        if ($this->userTable['date_of_birth'] == "0000-00-00") {
+            echo "<br>";
+        } else {
+            //get the current UNIX timestamp.
             $now = time();
-            
-            //Get the timestamp of the person's date of birth.
-            $dob = strtotime($row['date_of_birth']);
-            
-            //Calculate the difference between the two timestamps.
+
+            //get the timestamp of the person's date of birth.
+            $dob = strtotime($this->userTable['date_of_birth']);
+
+            //calculate the difference between the two timestamps.
             $difference = $now - $dob;
-            
-            //There are 31556926 seconds in a year.
+
+            //there are 31556926 seconds in a year.
             $age = floor($difference / 31556926);
-            
-            if($age <= 0){
+
+            if ($age <= 0) {
                 echo "<br>";
                 return;
             }
 
-            //Print it out.
+            //print it out.
             echo $age;
         }
     }
 
-    public function getDateOfBirth(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT date_of_birth FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        echo $row["date_of_birth"];
+    public function getDateOfBirth()
+    {
+        $this->userTable['date_of_birth'];
     }
 
-
-    public function getPhoneNumber(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT phone_number FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        echo $row['phone_number'];
-    }
-
-    public function showPhoneNumber(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT phone_number FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        if ($row['phone_number'] == 0) { echo "<br>";}
-        else{
-        $first_three_digits = substr($row['phone_number'], 0, 3);
-        $secont_three_digits = substr($row['phone_number'], 3, 3);
-        $third_three_digits = substr($row['phone_number'], 6, 3);
-        $phone_number_with_spaces = $first_three_digits . ' ' . $secont_three_digits . ' ' . $third_three_digits;
-        echo '+420 ' .  $phone_number_with_spaces;
+    public function getPhoneNumber()
+    {
+        if ($this->userTable['phone_number'] == null) {
+            return null;
         }
+        return $this->userTable['phone_number'];
     }
 
-    public function showNationality(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT nationality FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        if ($row['nationality'] == ""){  echo "<br>";}
-        echo $row['nationality'];
-    }
-
-    public function getNationality(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT nationality FROM users WHERE username= ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-        if ($row['nationality'] == ""){  echo "";}
-        echo $row['nationality'];
+    public function getNationality()
+    {
+        if ($this->userTable['Nationality'] == "") {
+            echo "";
+        }
+        return $this->userTable['Nationality'];
     }
 
     // show firiend list
-    public function friendList(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT * FROM friends WHERE user = ? ", 's', [$username]);
-        if($query == null){
+    public function getFriendList()
+    {
+        $friends_table = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM friends WHERE user = ? ", 's', [$this->userTable['username']]);
+        if ($friends_table == null) {
             return null;
         }
-        while ($row = $query->fetch_assoc()) {
-            $user_friend_to_lower = strtolower($row['user_friend']);
-            $friend_username = str_replace(" ", "_", $user_friend_to_lower);
-            $friend_profile_picture = prepareAndExecuteQuery($this->con, "SELECT profile_pic FROM users WHERE username = ? ", 's', [$friend_username]);
-            $friend_profile_picture = $friend_profile_picture->fetch_assoc();
-            $friend_profile_picture_src = $friend_profile_picture['profile_pic'];
-            $id = $row['friend_id'];
-            $friend_name_to_user_friend_list = str_replace("_", " ", $user_friend_to_lower);
-            $friend_name_to_user_friend_list = preg_replace('/[0-9]+/', '', $friend_name_to_user_friend_list);
-            $friend_name_to_user_friend_list = ucwords($friend_name_to_user_friend_list);
-            echo "<div id='$row[id]' class='row profile_friends_list'>";
-                echo "<div class='col-sm-9'>";
-                    echo "<a href='friend_profile.php?id=".$id." '' class='btn'>";
-                        echo '<img class="profile_user_friend_list_image" src="'.$friend_profile_picture_src.'">';
-                        echo $friend_name_to_user_friend_list;
-                    echo "</a>";
-                echo "</div>";
-                echo "<div class='col-sm-2'>";
-                    echo "<a  href='messages.php?friend_username=".$friend_username."' >";
-                        echo "<i class='fas fa-comment profile_user_friend_message'>";
-                        echo "</i>";
-                    echo  "</a>";
-                echo "</div>";
-            echo "</div>";
-          
+        $friends_objects_array = [];
+        while ($row = $friends_table->fetch_assoc()) {
+            $friend_username = $row['user_friend'];
+            $user_friend_obj = new User($this->dbConnection, $friend_username);
+            array_push($friends_objects_array, $user_friend_obj);
         }
+        return $friends_objects_array;
     }
 
-    public function friendFriendList(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT * FROM friends WHERE user = ? ", 's', [$username]);
-        if($query == null){
-            return null;
-        }
-        while ($row = $query->fetch_assoc()) {
-            $user_friend_to_lower = strtolower($row['user_friend']);
-            $username = str_replace(" ", "_", $user_friend_to_lower);
-            $profPic = prepareAndExecuteQuery($this->con, "SELECT profile_pic FROM users WHERE username = ? ", 's', [$username]);
-            $profPiccture = $profPic->fetch_assoc();
-            $profPictureSrc = $profPiccture['profile_pic'];
-            echo "<div class='profile_friends_list'>";
-                echo "<div>";
-                    echo "<p href='friend_profile.php?friend_username=".$username." '' >";
-                        echo '<img class="profile_user_friend_list_image" src="'.$profPictureSrc.'">';
-                        $friendsFriend = str_replace("_", " ", $row['user_friend']);
-                        $friendsFriend = preg_replace('/[0-9]+/', '', $friendsFriend);
-                        $friendsFriend = ucwords($friendsFriend);
-                        echo $friendsFriend;
-                    echo "</p>";
-                echo "</div>";
-            echo "</div>";
-        }
+    public function getMessages($user_logged_in, $friend)
+    {        
+        $messages = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM messages WHERE (user = ? AND user_to= ?) OR (user = ? AND user_to = ?)", 'ssss', [$user_logged_in, $friend, $friend, $user_logged_in]);
+        return $messages;
     }
 
-
-    public function getMessages($user_logged_in, $friend){
-        $messages = prepareAndExecuteQuery($this->con, "SELECT * FROM messages WHERE (user = ? AND user_to= ?) OR (user = ? AND user_to = ?)", 'ssss', [$user_logged_in , $friend, $friend, $user_logged_in]);
-        while ($row = $messages->fetch_assoc()) {
-            if($row['user'] == $user_logged_in){
-                echo "<div class='user_loggen_in_messages'>";
-                    echo $row['text'] . "<br>";
-                echo "</div>";
-            }
-            if($row['user_to'] == $user_logged_in){
-                echo "<div class='user_logged_in_messages_from_friend''>";
-                    echo $row['text'] . "<br>";
-                echo "</div>";
-            }
-        }
-    }
-
-    public function getLastMessageToId($user_logged_in, $friend){
+    public function getLastMessageToId($user_logged_in, $friend)
+    {
         $lastID = '';
-        $messages = prepareAndExecuteQuery($this->con, "SELECT * FROM messages WHERE (user = ? AND user_to = ?)", 'ss', [$user_logged_in, $friend]);
+        $messages = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM messages WHERE (user = ? AND user_to = ?)", 'ss', [$user_logged_in, $friend]);
         while ($row = $messages->fetch_assoc()) {
             $lastID = $row['id'];
         }
-        if ($lastID != null){
+        if ($lastID != null) {
             return $lastID;
         }
     }
-
-    public function isClosed(){
-        $username = $this->user['username'];
-        $query = prepareAndExecuteQuery($this->con, "SELECT user_closed FROM users WHERE username = ? ", 's', [$username]);
-        $row = mysqli_fetch_array($query);
-
-        if($row['user_closed'] == 'yes')
-            return true;
-        else 
-            return false;
-    }
-
-
 }
-
-?>

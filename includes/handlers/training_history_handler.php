@@ -3,8 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/database_helpers.php');
 
 // if session is set make user_logged_in variable
 if (isset($_SESSION['username'])) {
-    $user_logged_in = $_SESSION['username'];
-    $user_details_query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username= ? ", 's', [$user_logged_in]);
+    $user_details_query = prepareAndExecuteQuery($con, "SELECT * FROM users WHERE username= ? ", 's', [$_SESSION['username']]);
     $user = mysqli_fetch_array($user_details_query); //get all info about user as an array  
 } else {
     header("Location: register.php"); //if user is not logged in redirect back to register.php
@@ -191,7 +190,7 @@ function showBurnedCalories($row, $exercise_names)
 }
 
 // main associative array with keys and values
-$result = prepareAndExecuteQuery($con, "SELECT * FROM posts WHERE added_by= ? ", 's', [$user_logged_in]);
+$result = prepareAndExecuteQuery($con, "SELECT * FROM posts WHERE added_by= ? ", 's', [$_SESSION['username']]);
 
 // generating training report on trainig_history.php
 function newTraining($result, $con)

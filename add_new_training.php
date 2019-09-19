@@ -2,7 +2,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
 
-$user_obj = new User($con, $user_logged_in);
+$user_obj = new User($con, $_SESSION['username']);
+
+
 
 // add new training to database if post button is pressed
 if (isset($_POST['post'])) {
@@ -30,13 +32,12 @@ if (isset($_POST['post'])) {
         $_POST['t_machine'],
         $_POST['post_text'],
         $_POST['day_of_training'],
-        $user_logged_in
+        $_SESSION['username']
     );
     header("Location: training_history.php");
     exit;
 }
 ?>
-
 <!-- form for adding new training -->
 <div id="main_column" class="main_column column">
     <form action="add_new_training.php" class="post_form" id="main_form" method="POST">
