@@ -1,27 +1,30 @@
-<?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/config/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
 
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/user.php');
+
+// script parameters
 $function = $_POST['function'];
+$username = $_POST['user_logged_in'];
 $friend_username = $_POST['friend'];
 
+// script output
 $result = array();
-$messages_to_user_logged_in = array();
-$sent_by = array();
 
-switch($function){
-    case('get_state'):
-            $size_of_file = 0;
-            $messages = prepareAndExecuteQuery($con, "SELECT * FROM messages WHERE (user= ?  AND user_to = ?) OR (user = ? AND user_to = ?) ", 'ssss', [$_SESSION['username'],$friend_username , $friend_username, $_SESSION['username']]);
-            while ($row = $messages->fetch_assoc()) {
-                    array_push($messages_to_user_logged_in, $row['text']);
-                    array_push($sent_by, $row['user']);
-            }
+// get all messages between the user and his friend
+switch ($function) {
+        case ('get_messages'):
+                $messages = prepareAndExecuteQuery(
+                        $con,
+                        "SELECT * FROM messages WHERE (user= ?  AND user_to = ?) OR (user = ? AND user_to = ?) ",
+                        'ssss',
+                        [$username, $friend_username, $friend_username, $username]
+                );
+                while ($message = $messages->fetch_assoc()) {
+                        array_push($result, ['sent_by' => $message['user'], "text" => $message['text']]);
+                }
 }
 
-$result['messages'] = $messages_to_user_logged_in;
-
-$result['sent_by'] = $sent_by;
- 
 echo json_encode($result);
-?>

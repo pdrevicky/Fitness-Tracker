@@ -1,3 +1,8 @@
+/* 
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT --> 
+*/
+
 @font-face {
     font-family: 'Bellota-LightItalic';
     src: url('../fonts/Bellota-LightItalic.otf')
@@ -8,7 +13,8 @@
     src: url('../fonts/Bellota-BoldItalic.otf')
 }
 
-head, body {
+head,
+body {
     height: 100%;
     min-height: 100%;
 }
@@ -17,7 +23,7 @@ form {
     text-align: center;
 }
 
-body{
+body {
     margin: 0;
     padding: 0;
     background-image: url("../../assets/images/backgrounds/desktop.jpg");
@@ -26,12 +32,12 @@ body{
     height: 100%; */
 }
 
-a{
-    text-decoration:none;
-    color:white;
+a {
+    text-decoration: none;
+    color: white;
 }
 
-.login_and_register_box{
+.login_and_register_box {
     font-family: 'Bellota-LightItalic', sans-serif;
     position: relative;
     margin-left: auto;
@@ -49,7 +55,7 @@ a{
     font-family: 'Bellota-LightItalic', sans-serif;
     width: 100%;
     height: 90px;
-    background-color:#007bff;
+    background-color: #ff932e;
     color: rgb(236, 235, 235);
     text-align: center;
     border-top-left-radius: 7px;
@@ -57,7 +63,7 @@ a{
     margin-bottom: 20px;
 }
 
-.login_and_register_header h1{
+.login_and_register_header h1 {
     font-family: 'Bellota-LightItalic', sans-serif;
     margin-top: 0;
     margin-bottom: 0;
@@ -68,17 +74,19 @@ a{
 
 input[type="submit"] {
     font-family: 'Bellota-LightItalic', sans-serif;
-    background-color: rgb(0, 116, 248);
-    border: 1px, solid, rgb(0, 116, 248);
+    background-color: #ff8a1d;
+    border: 1px, solid, rgb(0, 0, 0);
     padding: 5px, 10px, 5px, 10px;
     border-radius: 3px;
     margin: 5px 0 10px 0;
-    color: white;
-    text-shadow: rgb(168, 168, 168) 0.5px 0.5px 0px;
+    color: black;
+    text-shadow: rgba(168, 168, 168, 0.322) 0.5px 0.5px 0px;
     font-size: 100%
 }
 
-input[type="text"], input[type="password"], input[type="email"]{
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     border: 1px solid rgb(0, 0, 0);
     margin-top: 5px;
     width: 50%;
@@ -87,10 +95,13 @@ input[type="text"], input[type="password"], input[type="email"]{
     padding-left: 5px;
 }
 
-input[type="text"]:hover, input[type="password"]:hover, input[type="email"]:hover{
-    border-color:rgb(0, 116, 248);
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover {
+    border-color: #ff8a1d;
+    ;
 }
 
-#register_form{
-    display:none;
+#register_form {
+    display: none;
 }

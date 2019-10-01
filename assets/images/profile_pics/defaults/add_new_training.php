@@ -1,13 +1,13 @@
 <!-- Author: Peter Drevicky 2019 -->
 <!-- License: MIT -->
 
-<!-- Create 'add new training' page -->
+<!-- Create add new training page -->
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/user.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/exercise_definition.php');
 
-// add new training session to database if post button is pressed
+// add new training to database if post button is pressed
 if (isset($_POST['post'])) {
     $user_obj = new User($con, $_SESSION['username']);
     $user_obj->submitPost(
@@ -41,7 +41,7 @@ if (isset($_POST['post'])) {
 }
 ?>
 
-<!-- form for adding new training session -->
+<!-- form for adding new training -->
 <h1><i class="fas fa-calendar-plus"></i> Add New Training <i class="fas fa-calendar-plus"></i></h1>
 <div class="container">
 <div id="main_column" class="main_column column">
@@ -51,7 +51,7 @@ if (isset($_POST['post'])) {
                 <hr>
             </div>
 
-            <!-- generate form for cardio training where user can add his performance -->
+            <!-- generate form for cardio training where User can add his performance -->
             <div id="cardio_training">
                 <h3><i class="fas fa-running"></i> Cardio Training</h3>
                 <br>
@@ -68,7 +68,7 @@ if (isset($_POST['post'])) {
             </div>
             <hr>
 
-            <!-- generate form for weight training where user can add his performance -->
+            <!-- generate form for weight training where User can add his performance -->
             <div id="weight_training">
                 <h3><i class="fas fa-dumbbell"></i> Weight Training</h3>
                 <br>
@@ -97,15 +97,15 @@ if (isset($_POST['post'])) {
             </div>
             <hr>
 
-            <!-- generate textarea for training where user can add his note from training -->
+            <!-- generate textarea for training where you User can add his note from training -->
             <div id="textarea_training">
                 <div class="row">
                     <div class="col-9">
                         <textarea name="post_text" id="post_text" placeholder="Some note from your training ?"></textarea>
                     </div>
                     <div class="col-3">
-                        <!-- on submit add information about training to database -->
-                        <input type="submit" name="post" id="post_button" class='btn' value="Submit">
+                        <!-- on submit add information about training to database and generate new training in training_history.php  -->
+                        <input type="submit" name="post" id="post_button" class='btn-primary' value="Submit">
                     </div>
                 </div>
             </div>

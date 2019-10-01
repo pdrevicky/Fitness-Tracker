@@ -1,3 +1,7 @@
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
+
+<!-- All functionality for registering new user -->
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/database_helpers.php');
 
@@ -21,7 +25,7 @@ function createUsername($first_name, $last_name, $con)
 
 if (isset($_POST['register_button'])) {
 
-    // Registration form values
+    // registration form values
     $first_name = strip_tags($_POST['register_first_name']);
     $first_name = ucfirst(strtolower($first_name));
     $_SESSION['register_first_name'] = $first_name;
@@ -88,15 +92,19 @@ if (isset($_POST['register_button'])) {
 
     if ($user_input_correct) {
         $password_1 = md5($password_1); // 'encrypt' password before sending to database
-
         $username = createUsername($first_name, $last_name, $con);
 
         // profile picture assigment
         $default_picture = "assets/images/profile_pics/defaults/head_deep_blue.png";
-        $profile_pic =  $default_picture;
+        $profile_picture =  $default_picture;
 
         // putting values into the databases
-        $query = prepareAndExecuteQuery($con, "INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 'isssssssssis', ['', $first_name, $last_name, $username, $email_1, $password_1, $sign_up_date, $profile_pic, 'no', '', '', '']);
+        $query = prepareAndExecuteQuery(
+            $con,
+            "INSERT INTO users VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+            'isssssssssis',
+            ['', $first_name, $last_name, $username, $email_1, $password_1, $sign_up_date, $profile_picture, 'no', '', '', '']
+        );
 
         array_push($error_array, "REGISTERED_SUCCESSFULLY");
 

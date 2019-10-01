@@ -1,11 +1,11 @@
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
+
+<!-- Create register and login page -->
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/register_handler.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php');
-?>
-
-<?php
-// if user is logged in redirect from register.php to profile.php
 ?>
 
 <!DOCTYPE html>
@@ -21,16 +21,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php')
 <body>
 
     <?php
-    //after registration show login form
+    // after registration show login form
     if (isset($_POST['register_button'])) {
         echo '
         <script>
-
-        $(document).ready(function() {
-            $("#login_form").hide();
-            $("#register_form").show();
-        });
-
+        showRegisterForm();
         </script>
      ';
     }
@@ -38,7 +33,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php')
     ?>
 
     <div class="wrapper">
-        <!-- show login and register box , process all user input through login_handler.php and register_handler.php  -->
+        <!-- show login and register box , process all user input through login_handler.php and register_handler.php -->
+        <!-- display problems with entered values to the user  -->
         <div class="login_and_register_box">
 
             <div class="login_and_register_header">
@@ -48,12 +44,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/handlers/login_handler.php')
 
             <div id="login_form">
                 <form action="register.php" method="POST">
-                    <input type="email" name="login_email" placeholder="Email Adress" value="<?php
-                                                                                                if (isset($_SESSION['login_email'])) {
-                                                                                                    echo $_SESSION['login_email'];
-                                                                                                }
-                                                                                                ?>" required> <br>
-                    <input id="login_password" type="password" name="login_password" placeholder="Password"> <br>
+                    <input type="email" name="login_email" placeholder="Email Adress" value="beta@gmail.com" required> <br>
+                    <input id="login_password" type="password" name="login_password" placeholder="Password" value="gogogo"> <br>
 
                     <?php if (in_array("EMAIL_OR_PASSWORD_INCORRECT", $error_array)) echo "Email or password was incorrect<br>" ?>
 

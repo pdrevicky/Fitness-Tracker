@@ -1,7 +1,13 @@
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
+
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/database_helpers.php');
+
+// contains functionality for working with user's data and accessing database
 class User
 {
+    // sql table with user's profile info
     private $userTable;
     private $dbConnection;
 
@@ -9,9 +15,10 @@ class User
     {
         $this->dbConnection = $connection;
         $query = prepareAndExecuteQuery($connection, "SELECT * FROM users WHERE username= ? ", 's', [$username]);
-        $this->userTable = mysqli_fetch_array($query);   //this user all data from table 
+        $this->userTable = mysqli_fetch_array($query);
     }
 
+    // submits training session as a post into the database
     public function submitPost(
         $cycling,
         $running,
@@ -34,16 +41,13 @@ class User
         $t_dumbbell,
         $t_barbell,
         $t_machine,
-        $body,
-        $day_of_training,
-        $user_logged_in
+        $user_notes,
+        $day_of_training
     ) {
-        $body = strip_tags($body);
-        $body = mysqli_real_escape_string($this->dbConnection, $body); //do not act on special characters
+        $user_notes = strip_tags($user_notes);
+        $user_notes = mysqli_real_escape_string($this->dbConnection, $user_notes); // do not act on special characters
 
-        $added_by = $user_logged_in;
-
-        // insert post        
+        // insert post      
         prepareAndExecuteQuery($this->dbConnection, "INSERT INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 'iiiiiiiiiiiiiiiiiiiiiisss', [
             '',
             $cycling, $running, $swimming,
@@ -53,48 +57,48 @@ class User
             $l_legPress, $l_squats, $l_calf,
             $s_dumbbell, $s_barbell, $s_machine,
             $t_dumbbell, $t_barbell, $t_machine,
-            $body, $added_by, $day_of_training
+            $user_notes, $this->userTable['username'], $day_of_training
         ]);
     }
 
-    public function updateProfileUserInfo($date_of_birth, $nationality, $email, $phone_number, $user_logged_in)
+    public function updateProfileUserInfo($date_of_birth, $nationality, $email, $phone_number)
     {
-        prepareAndExecuteQuery($this->dbConnection, "UPDATE users SET date_of_birth = ?, nationality = ?, email = ?, phone_number = ?  WHERE username = ?", 'sssis', [$date_of_birth, $nationality, $email, $phone_number, $user_logged_in]);
+        prepareAndExecuteQuery(
+            $this->dbConnection,
+            "UPDATE users SET date_of_birth = ?, nationality = ?, email = ?, phone_number = ?  WHERE username = ?",
+            'sssis',
+            [$date_of_birth, $nationality, $email, $phone_number, $this->userTable['username']]
+        );
     }
 
-    public function addFriend($friend_id, $user_logged_in, $friend_name)
+    public function addFriend($person_obj)
     {
-        // check if user exist
-        if ($user_logged_in == $friend_name) {
-            return null;
+        // make sure user cannot befriend themselves
+        if ($this->userTable['username'] == $person_obj->getUsername()) {
+            return;
         }
-        $user_logged_in_friends_ids = prepareAndExecuteQuery($this->dbConnection, "SELECT friend_id FROM friends WHERE user= ? ", 's', [$user_logged_in]);
-        while ($row = $user_logged_in_friends_ids->fetch_assoc()) {
-            if ($row['friend_id'] == $friend_id) {
-                return null;
-            }
+
+        // do not add friend if user has befriended him already
+        if ($this->isFriendWith($person_obj)) {
+            return;
         }
-        $id = $friend_id;
-        $friend = $friend_name;
-        $users = mysqli_query($this->dbConnection, "SELECT * FROM users");
-        while ($row = $users->fetch_assoc()) {
-            if ($row['id'] == $friend_id) {
-                prepareAndExecuteQuery($this->dbConnection, "INSERT INTO friends VALUES (?,?,?,?)", 'issi', ['', $user_logged_in, $friend, $id]);
-            }
-        }
+
+        // insert friendship into database
+        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO friends VALUES (?,?,?,?)", 'issi', ['', $this->userTable['username'], $person_obj->getUsername(), $person_obj->getId()]);
+        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO friends VALUES (?,?,?,?)", 'issi', ['',$person_obj->getUsername(),$this->userTable['username'], $this->userTable['id']]);
     }
 
-    public function removeFriend($friend_id, $user_logged_in)
+    public function removeFriend($friend_obj)
     {
-        $friend_id = (int) $friend_id;
-        prepareAndExecuteQuery($this->dbConnection, "DELETE FROM friends WHERE user = ? AND friend_id = ? ", 'si', [$user_logged_in, $friend_id]);
+        prepareAndExecuteQuery($this->dbConnection, "DELETE FROM friends WHERE user = ? AND friend_id = ? ", 'si', [$this->userTable['username'], (int) $friend_obj->getId()]);
+        prepareAndExecuteQuery($this->dbConnection, "DELETE FROM friends WHERE user = ? AND friend_id = ? ", 'si', [$friend_obj->getUsername(),$this->userTable['id'] ]);
     }
 
-    public function addMessage($message, $user_logged_in, $friend_username)
+    public function addMessage($message, $friend_obj)
     {
         $message = strip_tags($message);
         $message = rtrim($message);
-        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO messages VALUES (?,?,?,?)", 'isss', ['', $user_logged_in, $friend_username, $message]);
+        prepareAndExecuteQuery($this->dbConnection, "INSERT INTO messages VALUES (?,?,?,?)", 'isss', ['', $this->userTable['username'], $friend_obj->getUsername(), $message]);
     }
 
     public function getProfilePicture()
@@ -114,7 +118,7 @@ class User
 
     public function getEmail()
     {
-        return $this->userTable['email'];
+        return strtolower($this->userTable['email']);
     }
 
     public function getId()
@@ -127,50 +131,42 @@ class User
         if ($this->userTable['date_of_birth'] == "0000-00-00") {
             echo "<br>";
         } else {
-            //get the current UNIX timestamp.
+            // calculate age
             $now = time();
-
-            //get the timestamp of the person's date of birth.
-            $dob = strtotime($this->userTable['date_of_birth']);
-
-            //calculate the difference between the two timestamps.
-            $difference = $now - $dob;
-
-            //there are 31556926 seconds in a year.
-            $age = floor($difference / 31556926);
+            $date_of_birth = strtotime($this->userTable['date_of_birth']);
+            $seconds_per_year = 31556926;
+            $age = floor(($now - $date_of_birth) / $seconds_per_year);
 
             if ($age <= 0) {
                 echo "<br>";
                 return;
             }
 
-            //print it out.
-            echo $age;
+            return $age;
         }
     }
 
     public function getDateOfBirth()
     {
-        $this->userTable['date_of_birth'];
+        return $this->userTable['date_of_birth'];
     }
 
     public function getPhoneNumber()
     {
-        if ($this->userTable['phone_number'] == null) {
-            return null;
-        }
         return $this->userTable['phone_number'];
     }
 
     public function getNationality()
     {
-        if ($this->userTable['Nationality'] == "") {
-            echo "";
-        }
         return $this->userTable['Nationality'];
     }
 
-    // show firiend list
+    private static function userCompare($user1, $user2)
+    {
+        return strcmp($user1->getUsername(), $user2->getUsername());
+    }
+    
+    //  returns list of user's friends as user objects sorted by username
     public function getFriendList()
     {
         $friends_table = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM friends WHERE user = ? ", 's', [$this->userTable['username']]);
@@ -183,24 +179,31 @@ class User
             $user_friend_obj = new User($this->dbConnection, $friend_username);
             array_push($friends_objects_array, $user_friend_obj);
         }
-        return $friends_objects_array;
+
+        usort($friends_objects_array, array("User", "userCompare"));
+
+        return  $friends_objects_array;
     }
 
-    public function getMessages($user_logged_in, $friend)
-    {        
-        $messages = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM messages WHERE (user = ? AND user_to= ?) OR (user = ? AND user_to = ?)", 'ssss', [$user_logged_in, $friend, $friend, $user_logged_in]);
-        return $messages;
-    }
-
-    public function getLastMessageToId($user_logged_in, $friend)
+    public function isFriendWith($person)
     {
-        $lastID = '';
-        $messages = prepareAndExecuteQuery($this->dbConnection, "SELECT * FROM messages WHERE (user = ? AND user_to = ?)", 'ss', [$user_logged_in, $friend]);
-        while ($row = $messages->fetch_assoc()) {
-            $lastID = $row['id'];
+        foreach ($this->getFriendList() as $friend) {
+            if ($friend->getUsername() == $person->getUsername()) {
+                return true;
+            }
         }
-        if ($lastID != null) {
-            return $lastID;
-        }
+        return false;
+    }
+
+    // returns all messages between user and his friend
+    public function getMessages($friend_obj)
+    {
+        $messagesTable = prepareAndExecuteQuery(
+            $this->dbConnection,
+            "SELECT * FROM messages WHERE (user = ? AND user_to= ?) OR (user = ? AND user_to = ?)",
+            'ssss',
+            [$this->userTable['username'], $friend_obj->getUsername(), $friend_obj->getUsername(), $this->userTable['username']]
+        );
+        return $messagesTable;
     }
 }

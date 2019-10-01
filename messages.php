@@ -1,118 +1,119 @@
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
+
+<!-- Create a page with a chat window between the logged user and one of his friends -->
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/header.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/classes/user.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/includes/profile_helper.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/user.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/profile_helper.php');
 
 $user_obj = new User($con, $_SESSION['username']);
+$friend_obj = new User($con, $_GET['friend_username']);
 
-//add new info about user to database and edit it
-if(isset($_POST['profile_user_info_edit'])){
-    $user_obj->updateProfileUserInfo($_POST['date_of_birth'],$_POST['nationality'],$_POST['email'], $_POST['phone_number'], $_SESSION['username']);
+// add new info about user to database and edit it
+if (isset($_POST['profile_user_info_edit'])) {
+    $user_obj->updateProfileUserInfo($_POST['date_of_birth'], $_POST['nationality'], $_POST['email'], $_POST['phone_number']);
 }
 
-//adding friend
-if(isset($_POST['profile_add_friend_button'])){
-    $user_obj->addFriend($_POST['search_user_input'], $_SESSION['username'], $friend_username);
-}
-
-//user full name as a page title
-printProfileTitle($user_obj);
-
-$friend_username = $_GET['friend_username'];
-$friend_username_title = str_replace("_", " ", $friend_username);
-$friend_username_title = ucwords($friend_username_title);
-$friend_username_title = preg_replace('/[0-9]+/', '', $friend_username_title); 
-
-
-//get las id for message I get
-$lastID =  $user_obj->getLastMessageToId($_SESSION['username'], $friend_username);
-
-//add messages to databes
-if(isset($_POST['send_message'])){
-    $user_obj->addMessage($_POST['message'], $_SESSION['username'], $friend_username);
-    header('Location: messages.php?friend_username='.$friend_username.'');
+// add messages to database
+if (isset($_POST['send_message'])) {
+    $user_obj->addMessage($_POST['message'], $friend_obj);
+    header('Location: messages.php?friend_username=' . $friend_obj->getUsername() . '');
     exit();
 }
 
-function getMessages($user_logged_in_username, $friend_username, $user_obj){
-    $messages =  $user_obj->getMessages($user_logged_in_username, $friend_username);
-    while ($row = $messages->fetch_assoc()) {
-        if ($row['user'] == $user_logged_in_username) {
-            echo "<div class='user_loggen_in_messages'>";
-            echo $row['text'] . "<br>";
-            echo "</div>";
-        }
-        if ($row['user_to'] == $user_logged_in_username) {
-            echo "<div class='user_logged_in_messages_from_friend''>";
-            echo $row['text'] . "<br>";
-            echo "</div>";
-        }
-    }
-
+// print single message as a row in chat
+function printMessage($message_text, $div_class)
+{
+    echo "<div class='$div_class'>";
+    echo $message_text . "<br>";
+    echo "</div>";
 }
 
-?> 
-<script>
+// print all messages between two users as rows in chat when the page is first loaded
+function printMessages($user_obj, $friend_obj)
+{
+    $messages =  $user_obj->getMessages($friend_obj);
+    while ($message = $messages->fetch_assoc()) {
+        if ($message['user'] == $user_obj->getUsername()) {
+            $message_div_class = 'messages_from_user_logged_in';
+        }
+        if ($message['user_to'] == $user_obj->getUsername()) {
+            $message_div_class = 'messages_from_friend';
+        }
+        printMessage($message['text'], $message_div_class);
+    }
+}
 
-    function processNewMessages(data)
-    {  
+?>
+<script>
+    // if getUpdatedMessages return success , print all messages between two users as rows in chat
+    function processMessages(result) {
         $("#message_box").empty();
-        for(var i = 0; i < data['messages'].length; i++ ){
-            var message_box = document.getElementById("message_box");
+        for (var i = 0; i < result.length; i++) {
             var div = document.createElement("DIV");
-            if(data['sent_by'][i] == "<?php echo $friend_username; ?>" ){
-                div.className = 'user_logged_in_messages_from_friend';
+            if (result[i]['sent_by'] == "<?php echo $user_obj->getUsername(); ?>") {
+                div.className = 'messages_from_user_logged_in';
             }
-            if(data['sent_by'][i] == "<?php echo $_SESSION['username']; ?>" ){
-                div.className = 'user_loggen_in_messages';
+            if (result[i]['sent_by'] == "<?php echo $friend_obj->getUsername(); ?>") {
+                div.className = 'messages_from_friend';
             }
-            div.innerHTML = data['messages'][i];
-            message_box.appendChild(div);    
+            div.innerHTML = result[i]['messages'][i];
+
+            document.getElementById("message_box").appendChild(div);
         }
     }
-    //loead all messages in databese every 0.5 sec;
-    setInterval(function(){
-        $load_messages_interval = 500;
+
+    // retrieves up to date messages from server
+    function getUpdatedMessages() {
         $.ajax({
-                    url:"includes/handlers/messages_handler.php", //the page containing php script
-                    type: "POST", //request type,
-                    dataType: "json",
-                    data: {function: "get_state", friend: "<?php echo $friend_username; ?>", user_logged_in: "<?php echo $_SESSION['username']; ?>" },
-                    success: processNewMessages,        
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log(xhr);
-                        console.log(xhr.status);
-                        console.log(thrownError);
-                    }
-                });
-        } , 500)
- 
+            url: "includes/handlers/messages_handler.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                function: "get_messages",
+                user_logged_in: "<?php echo $user_obj->getUsername(); ?>"
+                friend: "<?php echo $friend_obj->getUsername(); ?>",
+            },
+            success: processMessages,
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.log(xhr);
+                console.log(xhr.status);
+                console.log(thrownError);
+            }
+        });
+    }
+
+    // reload all messages from database periodically
+    $reload_messages_interval = 500;
+    setInterval(getUpdatedMessages, $reload_messages_interval)
 </script>
+
+<!-- create page -->
+<?php printProfileTitle($user_obj->getFirstAndLastName(), "h1"); ?>
+
 <div class='container'>
     <div class='row'>
         <?php
-             printProfilePicture($user_obj);
-             printProfileEditColumn($user_obj)
+        printProfilePicture($user_obj, true);
+        printProfileUserInfo($user_obj, true);
+        printProfileUserInfoEdit($user_obj);
         ?>
-        <div id="profile_user_message_column" >
+        <div id="profile_user_message_column">
             <div class='col-sm profile column'>
-                    <?php              
-                    echo "<div id='profile_title'>";
-                        echo "<h4>";
-                            echo "<b>";
-                                echo $friend_username_title;
-                            echo "</b>";
-                        echo "</h4>";
-                    echo "</div>";
-                        echo "<div id='message_box'>";
-                            getMessages($_SESSION['username'], $friend_username,$user_obj );
-                        echo "</div>";
-                    echo "<form id='messages_input' action='messages.php?friend_username=".$friend_username."' method='post'>";
-                         echo "<textarea id='messages_input_text' name='message' rows='5' required></textarea>";
-                         echo "<button id='messages_input_button' type='submit' name='send_message' class='btn btn-primary'>Send</button>";
-                    echo "</form>";
-                    ?>
-                    <a href='profile.php' id='profile_back_button' class='btn btn-primary'>Back</a>
+                <?php
+                printProfileTitle($friend_obj->getFirstAndLastName(), "h4");
+
+                echo "<div id='message_box'>";
+                printMessages($user_obj, $friend_obj);
+                echo "</div>";
+
+                echo "<form id='messages_input' action='messages.php?friend_username=" . $friend_obj->getUsername() . "' method='post'>";
+                echo "<textarea id='messages_input_text' name='message' rows='5' autofocus required></textarea>";
+                echo "<button id='messages_input_button' type='submit' name='send_message' class='btn profile_user_buttons'>Send</button>";
+                echo "</form>";
+                ?>
+                <a href='profile.php' id='profile_back_button' class='btn profile_user_buttons'>Back</a>
             </div>
             <div>
             </div>

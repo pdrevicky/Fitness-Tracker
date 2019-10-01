@@ -1,3 +1,8 @@
+/* 
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT --> 
+*/
+
 body {
     background-color: #f9fcff;
 }
@@ -5,13 +10,14 @@ body {
 .top_bar {
     width: 100%;
     min-width: 150px;
-    height: 60px;
-    background-color: #0044ff;
+    height: 75px;
+    background-color: #ff932e;
     margin: 0 0 15px 0;
     display: inline-flex;
     color: rgb(0, 0, 0);
     z-index: 10;
     position: fixed;
+    border-bottom: 1px solid black;
 }
 
 #nav_bar_profile_pic {
@@ -64,7 +70,7 @@ body {
     font-size: 26;
     line-height: 70px;
     display: none;
-    background-color: #0044ff;
+    background-color: #ff932e;
     border-style: none;
 }
 
@@ -94,9 +100,9 @@ body {
     #toggle:checked+#menu {
         padding-top: 0px;
         display: block;
-        background-color: rgb(144, 187, 252);
+        background-color: rgb(255, 197, 122);
         height: fit-content;
-        margin-top: 60px;
+        margin-top: 75px;
         position: absolute;
         border: 1px solid black;
     }
@@ -144,20 +150,20 @@ body {
 }
 
 #main_column {
-    background-color: #c2ddff;
-    box-shadow: 2px 2px 2px #69b2ff;
+    background-color: #fd922d;
+    box-shadow: 2px 2px 2px #f5a255;
     margin-bottom: 10px;
-    margin-right: 200px;
+    width: 100%;
 }
 
 .column {
     margin-top: 20px;
-    background-color: #c2ddff;
+    background-color: #fd922d;
     padding: 10px;
-    border-left: 1px solid #69b2ff;
-    border-top: 1px solid #69b2ff;
+    border-left: 1px solid #f5a255;
+    border-top: 1px solid #f5a255;
     border-radius: 5px;
-    box-shadow: 2px 2px 1px #69b2ff;
+    box-shadow: 2px 2px 1px #f5a255;
 }
 
 .user_details {
@@ -243,6 +249,10 @@ body {
     text-align: center;
 }
 
+#add_new_training_date {
+    height: 30px;
+}
+
 .body_part_title {
     font-size: 20px;
     margin-left: 50px;
@@ -257,15 +267,15 @@ body {
 }
 
 #post_button {
-    width: 100%;
+    width: 50%;
     height: 50px;
-    text-align: left;
-    color: white;
-    box-shadow: rgb(0, 162, 255);
+    text-align: center;
+    color: black;
+    background-color: #ff7b00;
     font-weight: bold;
     font-size: 20px;
-    text-align: left;
     margin-top: 30px;
+    border: 1px solid black;
 }
 
 a {
@@ -292,20 +302,20 @@ a:hover {
     margin-bottom: 50px;
     margin-top: 50px;
     border-radius: 20px;
-    background-color: #c2ddff;
+    background-color: #ffd195;
     font-weight: bold;
-    box-shadow: 2px 2px 1px #69b2ff;
+    box-shadow: 2px 2px 1px #f8d7ac;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     padding-bottom: 20px;
-    border-left: 1px solid #69b2ff;
+    border-left: 1px solid #ffc170;
 }
 
 #best_performances_titles {
     margin-bottom: 50px;
     font-size: 25px;
     padding-bottom: 30px;
-    background-color: rgb(0, 99, 248);
+    background-color: #ff7b00;
     padding-top: 20;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -436,6 +446,13 @@ label {
     display: none;
 }
 
+.profile_user_buttons {
+    background-color: #ff7b00;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 #profile_user_search_friend ul {
     background-color: white;
     border-left: 1px solid lightblue;
@@ -452,7 +469,8 @@ label {
 }
 
 #profile_user_search_friend li:hover {
-    background-color: #0044ff;
+    background-color: #ff7b00;
+    color: black;
 }
 
 .profile_user_search_image {
@@ -511,7 +529,7 @@ label {
 }
 
 #profile_friends_list .col-sm-9:hover {
-    background-color: #255efd;
+    background-color: #ffab5d;
 }
 
 #profile_friends_list a {
@@ -548,7 +566,7 @@ label {
 }
 
 .profile_user_friend_message:hover {
-    background-color: #c2ddff;
+    background-color: #fd922d;
 }
 
 #profile_user_message_column {
@@ -571,17 +589,17 @@ label {
     width: 250px;
     margin-left: 15px;
     border-radius: 10px;
-    -webkit-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
-    -moz-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
-    box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    -webkit-box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
+    -moz-box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
+    box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
     overflow-x: hidden;
     overflow-x: auto;
     padding-top: 5px;
     max-width: 250px;
 }
 
-.user_loggen_in_messages {
-    background-color: #69b2ff;
+.messages_from_user_logged_in {
+    background-color: rgb(250, 162, 81);
     width: fit-content;
     margin: 3px 10px 3px 10px;
     border-radius: 10px;
@@ -589,12 +607,11 @@ label {
     padding-right: 10px;
     text-align: left;
     white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
+    word-break: break-word;
     white-space: normal;
 }
 
-.user_logged_in_messages_from_friend {
+.messages_from_friend {
     background-color: #fd6e6e;
     width: fit-content;
     margin: 3px 10px 3px 80px;
@@ -602,6 +619,7 @@ label {
     padding-left: 10px;
     padding-right: 10px;
     text-align: left;
+    word-break: break-word;
 }
 
 #messages_input {
@@ -616,9 +634,9 @@ label {
     resize: none;
     font-size: 13px;
     padding-bottom: 0;
-    -webkit-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
-    -moz-box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
-    box-shadow: 6px 6px 5px 0px rgba(74, 124, 224, 1);
+    -webkit-box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
+    -moz-box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
+    box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
     align-content: flex-start;
 }
 
@@ -648,4 +666,77 @@ label {
 
 #user_friend_profile_pic {
     z-index: 100;
+}
+
+.wrapper {
+    padding-top: 100px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 50px;
+}
+
+h3 {
+    padding-right: 75px;
+}
+
+.training {
+    font-family: 'Roboto', sans-serif;
+    width: 45%;
+    border: solid 1px black;
+    margin: 0 20px 30px 20px;
+    ;
+    border-radius: 10px;
+    box-shadow: 6px 6px 5px 0px rgb(206, 120, 39);
+    height: fit-content !important;
+}
+
+#dateOfTraining {
+    height: 50px;
+    padding-top: 10px;
+    background-color: #f37703;
+    color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: solid 1px black;
+}
+
+.training_weight {
+    margin-bottom: 10px;
+}
+
+.training_note {
+    margin-bottom: 15px;
+}
+
+#cardioTraining {
+    padding-top: 20px;
+    background-color: rgb(144, 187, 252);
+}
+
+#weightTraining {
+    padding-top: 20px;
+    background-color: rgb(144, 187, 252);
+}
+
+#deleteTraining {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: inline-block;
+    width: 100%;
+    border-top: solid 1px black;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+form {
+    margin: 0;
+}
+
+.burned_kcal {
+    margin-bottom: 15px;
+    border-top: solid 1px black;
+    padding-top: 10px;
 }

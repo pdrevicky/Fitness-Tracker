@@ -1,3 +1,7 @@
+<!-- Author: Peter Drevicky 2019 -->
+<!-- License: MIT -->
+
+<!-- Upload a new profile picture for the user -->
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/classes/user.php');
@@ -12,19 +16,16 @@ if (isset($_FILES['image'])) {
    $new_route = "assets/images/profile_pics/defaults/" . $file_name = $_FILES['image']['name'];
    $query = prepareAndExecuteQuery($con, "UPDATE users SET profile_pic = ? WHERE username = ?", 'ss', [$new_route, $_SESSION['username']]);
 
-   $extensions = array("jpeg", "jpg", "png");
-
-   if (in_array($file_ext, $extensions) === false) {
-      $file_name = "head_deep_blue.png";
-      $new_route = "assets/images/profile_pics/defaults/" . $file_name;
-      $query = prepareAndExecuteQuery($con, "UPDATE users SET profile_pic = ? WHERE username = ?", 'ss', [$new_route, $_SESSION['username']]);
-      $errors[] = "extension not allowed, please choose a JPEG or PNG file.";
+   $allowed_extensions = array("jpeg", "jpg", "png");
+   if (in_array($file_ext, $allowed_extensions) === false) {
+      prepareAndExecuteQuery($con, "UPDATE users SET profile_pic = ? WHERE username = ?", 'ss', [$user_obj->getProfilePicture(), $_SESSION['username']]);
    }
 
+   $user_obj = new User($con, $_SESSION['username']);
    if (empty($errors) == true) {
       move_uploaded_file($file_tmp, $_SERVER['DOCUMENT_ROOT'] . "/assets/images/profile_pics/defaults/" . $file_name);
    } else {
-      print_r($errors);
+      echo($errors);
    }
    header("Location: ../../profile.php");
    exit();
