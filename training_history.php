@@ -168,7 +168,7 @@ function printTrainingHistory($con, $exercise_names_to_units, $cardio_exercises,
 
 <h1><i class="fas fa-book-open"></i> Your Trainings <i class="fas fa-book-open"></i></h1>
 <div class="container">
-    <div class="row">
+    <div class="row" id="training_history_trainings">
         <?php
         printTrainingHistory($con, $exercise_names_to_units, $cardio_exercises, $weight_exercises, $weight_exercise_groups, $kcals_burned_per_unit_of_exercise);
         ?>

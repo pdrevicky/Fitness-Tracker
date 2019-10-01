@@ -152,7 +152,7 @@ body {
 #main_column {
     background-color: #fd922d;
     box-shadow: 2px 2px 2px #f5a255;
-    margin-bottom: 10px;
+    margin:50px 0px 10px 0px;
     width: 100%;
 }
 
@@ -386,7 +386,6 @@ label:hover {
 
 #profile_title {
     text-align: center;
-    margin-bottom: 25px;
 }
 
 #profile_pic {
@@ -674,7 +673,7 @@ label {
 }
 
 h1 {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 h3 {
@@ -740,3 +739,8 @@ form {
     border-top: solid 1px black;
     padding-top: 10px;
 }
+
+#training_history_trainings {
+    margin-top: 50px;
+}
+
