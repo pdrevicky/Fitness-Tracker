@@ -1,58 +1,55 @@
-# Fitness-Tracker
-Fitness Tracker fitness and social web application
+# Fitness Tracker ([try it here](http://peterdrevicky.php5.cz/Fitness-Tracker/))
+This website combines a fitness tracker functionality with a social network. Users can add workouts, monitor their progress by looking at their training history and table of best performances for individual exercises. Users also keep a list of friends with whom they can share instant messages. 
+
+- It is written in vanilla JS and PHP.
+- MySQL database is used to store user data.
 
 ## Login page  
-  - User can login or click to register
-  - After login button is pressed, precesses data from inputs, evaluate them
-  - If login data are correct user is logged in
-  - If there is any problem show error
+  - User can login or click on the register button to show a register form
+  - If login data are correct, the user is logged in otherwise notified about incorrect data
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/register_php.png)
   
 ## Register page
-  - User can register on this page
-  - After register button is pressed, precesses data from inputs, evaluate them
-  - If register data are valid user is registered
+  - A new user can register on this page
+  - After register button is pressed, the input data are evaluated and if there is a problem the user is notified
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/register_php_success.png)
   
-  - If there is any problem show errors
+  - If there is any problem, errors are show for each input field individually
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/register_php_errors.png)
   
 ## Profile page
-  - User profile page multiple features
-  - User profile picture column - user can see his profile picture and change it
-  - User info column - user can see information about himself and edit it
-  - User friend column user can see his friend list, click on his friend and see his profile,
-  click on message icon and start chat with friend, or search new friend in search bar below
-  (names are suggested automatically based on input)
+  This is the user's home page and contains several features:
+  - User's profile picture - user can see his profile picture and upload a new one
+  - Information about the user (age, contact email etc.) which he/she can modify
+  - A list of user's friends. The user can on one of them to see their profile 
+  or click on the message icon and view past messages and send new ones.
+  - New friends can be added by using the search bar below (names are suggested automatically based on current input - ajax is used to retrieve suggestions from the server)
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/profile.png)
   
 ## Messages page
-  - Same features like profile page except friend list column is messages column that allow User to
-  write messages with friend
-  
+  - Displays chat with the selected friend. I wanted the server to notify the user's browser when the user receives a new message but unfortunately the hosting I was using did not allow me to install new libraries on the server side. New messages are received from server by polling it using a small time interval.
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/messages.png)
   
 ## Friend profile page
-  - Show User's friend info
+  - Shows the selected friend's profile page which includes their picture, profile information and a list of their friends
   
  ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/friend_profile.png)
  
-## Add new training page
-  - User can add information about his training and his performances, plus add some note about training
-  - After submitting the button training is saved to traiing history page
+## Add new training session page
+  - User can add information about the training session he did. He can also record his thoughts about it in a note
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/add_new_training.png)
   
 ## Training history page
-  - Show user training history with all his training from newest to oldest
+  - Shows user his training history with all the training sessions ordered from newest to oldest
   
   ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/training_history.png)
   
 ## Best performances page
- - Show user best performances and the date they took place
+ - Show user his best performances for each exercise and the date of the training session on which they happened
  
  ![](https://github.com/pdrevicky/Fitness-Tracker/blob/master/images/best_performances.png)
